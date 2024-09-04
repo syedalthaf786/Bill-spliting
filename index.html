@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bill Splitting Calculator</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <style>
+        .container {
+            max-width: 600px;
+            margin-top: 50px;
+        }
+        #result {
+            opacity: 0;
+            transition: opacity 0.5s ease-in-out;
+        }
+        #result.show {
+            opacity: 1;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2 class="text-center">Bill Splitting Calculator</h2>
+        <div class="form-group">
+            <label for="amount">Total Amount:</label>
+            <input type="number" class="form-control" id="amount" placeholder="Enter total amount" step="0.01">
+        </div>
+        <div class="form-group">
+            <label for="members">Number of Members:</label>
+            <input type="number" class="form-control" id="members" placeholder="Enter number of members" step="1">
+        </div>
+        <div class="form-group">
+            <label for="currency">Currency:</label>
+            <select class="form-control" id="currency">
+                <option value="$">USD ($)</option>
+                <option value="€">Euro (€)</option>
+                <option value="£">GBP (£)</option>
+                <option value="₹">INR (₹)</option>
+                <option value="¥">JPY (¥)</option>
+            </select>
+        </div>
+        <button class="btn btn-primary btn-block" onclick="calculate()">Calculate</button>
+        <h4 class="text-center mt-4">Amount per Member:</h4>
+        <div id="result" class="text-center"></div>
+    </div>
+
+    <script>
+        function calculate() {
+            // Get the values from the input fields
+            var amount = parseFloat(document.getElementById('amount').value);
+            var members = parseInt(document.getElementById('members').value);
+            var currencySymbol = document.getElementById('currency').value;
+            var resultElement = document.getElementById('result');
+
+            // Perform validation
+            if (isNaN(amount) || amount <= 0) {
+                alert("Please enter a valid amount.");
+                return;
+            }
+            if (isNaN(members) || members <= 0) {
+                alert("Please enter a valid number of members.");
+                return;
+            }
+
+            // Calculate the amount per member
+            var amountPerMember = (amount / members).toFixed(2);
+
+            // Update the result text
+            resultElement.innerText = currencySymbol + amountPerMember;
+
+            // Add the 'show' class to trigger the transition
+            resultElement.classList.add('show');
+        }
+
+        // Optionally, hide the result when input values change to reset the transition
+        document.querySelectorAll('#amount, #members').forEach(input => {
+            input.addEventListener('input', () => {
+                document.getElementById('result').classList.remove('show');
+            });
+        });
+    </script>
+</body>
+</html>
